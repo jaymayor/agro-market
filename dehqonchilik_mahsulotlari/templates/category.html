@@ -1,0 +1,215 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kategoriya - Agro Market</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#22c55e',
+                        'primary-hover': '#16a34a',
+                        'primary-light': '#dcfce7',
+                        'bg-color': '#ffffff',
+                        'bg-light': '#f9fafb',
+                        'text-color': '#1f2937',
+                        'text-muted': '#6b7280',
+                        'text-light': '#9ca3af',
+                        'border-color': '#e5e7eb',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-bg-color text-text-color font-sans">
+    <!-- Header -->
+    <header class="bg-cover bg-center bg-no-repeat border-b border-border-color sticky top-0 z-100" style="background-image: url('https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=1920&q=80');">
+        <div class="bg-black/70 backdrop-blur-sm">
+            <div class="max-w-7xl mx-auto px-5">
+                <div class="flex items-center justify-between py-4">
+                    <div class="flex items-center gap-12">
+                        <a href="/" class="flex items-center gap-3 text-white no-underline flex-shrink-0">
+                            <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white text-xl">
+                                <i class="fas fa-leaf"></i>
+                            </div>
+                            <span class="text-2xl font-bold text-white">Agro Market</span>
+                        </a>
+                        
+                        <div class="flex flex-col gap-1">
+                            <div class="flex items-center gap-2 text-sm text-white">
+                                <i class="fas fa-phone text-primary w-4"></i>
+                                <span>+998 90 123 45 67</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-sm text-white">
+                                <i class="fas fa-envelope text-primary w-4"></i>
+                                <span>info@agromarket.uz</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center gap-12">
+                        <div class="flex-1 max-w-md">
+                            <form class="relative" onsubmit="handleSearch(event)">
+                                <input type="text" id="searchInput" placeholder="Mahsulot qidirush..." class="w-full py-3.5 px-6 pr-12 border border-border-color rounded-full bg-white/20 text-white text-sm focus:outline-none focus:border-primary focus:bg-white/30">
+                                <button type="submit" class="absolute right-4 top-1/2 -translate-y-1/2 text-white hover:text-primary transition-colors">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </form>
+                        </div>
+                        
+                        <div class="flex items-center gap-8">
+                            <a href="/cart/" class="relative w-12 h-12 border border-border-color rounded-full bg-white/20 flex items-center justify-center text-white no-nowrap hover:border-primary hover:text-primary transition-colors">
+                                <i class="fas fa-shopping-cart"></i>
+                                <span class="cart-badge absolute -top-1 -right-1 w-5 h-5 bg-primary text-white text-xs rounded-full flex items-center justify-center" id="cartCount">0</span>
+                            </a>
+                            <div class="auth-section" id="authSection">
+                                <a href="/login/" class="bg-primary text-white px-6 py-2.5 rounded-full font-medium hover:bg-primary-hover transition-colors no-underline">Kirish</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <nav class="flex items-center gap-9 border-t border-white/20 py-3.5">
+                    <a href="/" class="text-white font-medium text-sm no-underline hover:text-primary transition-colors relative">Bosh sahifa</a>
+                    <a href="/products/" class="text-white font-medium text-sm no-underline hover:text-primary transition-colors relative">Mahsulotlar</a>
+                    <a href="/shops/" class="text-white font-medium text-sm no-underline hover:text-primary transition-colors relative">Do'konlar</a>
+                    <a href="/categories/" class="text-white font-medium text-sm no-underline hover:text-primary transition-colors relative text-primary">Kategoriyalar</a>
+                    <a href="/about/" class="text-white font-medium text-sm no-underline hover:text-primary transition-colors relative">Biz haqimizda</a>
+                    <a href="/contact/" class="text-white font-medium text-sm no-underline hover:text-primary transition-colors relative">Aloqa</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="py-8">
+        <div class="max-w-7xl mx-auto px-5">
+            <!-- Category Header -->
+            <div class="bg-primary-light rounded-2xl p-8 mb-8" id="categoryHeader">
+                <div class="flex items-center justify-between">
+                    <div class="flex-1">
+                        <h1 id="categoryTitle" class="text-3xl font-bold text-text-color mb-2">Yuklanmoqda...</h1>
+                        <p id="categoryDescription" class="text-text-muted mb-4">Kategoriya ma'lumotlari</p>
+                        <div class="flex gap-6">
+                            <span id="productCount" class="text-sm text-text-muted">0 mahsulot</span>
+                            <span id="shopCount" class="text-sm text-text-muted">0 do'kon</span>
+                        </div>
+                    </div>
+                    <div class="w-24 h-24 bg-primary rounded-full flex items-center justify-center">
+                        <i id="categoryIcon" class="fas fa-leaf text-4xl text-white"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Products Section -->
+            <section>
+                <div class="flex items-center justify-between mb-6">
+                    <div>
+                        <select id="sortSelect" onchange="sortProducts()" class="px-4 py-2 border border-border-color rounded-lg bg-white text-text-color text-sm focus:outline-none focus:border-primary">
+                            <option value="-created_at">Yangi</option>
+                            <option value="price">Narx (o'sish)</option>
+                            <option value="-price">Narx (kamayish)</option>
+                            <option value="-rating">Reyting</option>
+                            <option value="-sales_count">Mashhurlik</option>
+                        </select>
+                    </div>
+                    
+                    <div class="flex gap-2">
+                        <button class="w-10 h-10 bg-primary text-white rounded-lg flex items-center justify-center" data-view="grid">
+                            <i class="fas fa-th"></i>
+                        </button>
+                        <button class="w-10 h-10 bg-gray-200 text-gray-600 rounded-lg flex items-center justify-center hover:bg-gray-300 transition-colors" data-view="list">
+                            <i class="fas fa-list"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6" id="categoryProducts">
+                    <!-- Products loaded by JS -->
+                </div>
+                
+                <div class="loading-more flex items-center justify-center gap-3 py-8" id="loadingMore" style="display: none;">
+                    <div class="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+                    <span>Yuklanmoqda...</span>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-5">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <a href="/" class="flex items-center gap-3 text-white no-underline mb-4">
+                        <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white text-xl">
+                            <i class="fas fa-leaf"></i>
+                        </div>
+                        <span class="text-2xl font-bold text-white">Agro Market</span>
+                    </a>
+                    <p class="text-gray-400 text-sm">Dehqonchilik mahsulotlarini online sotish platformasi</p>
+                </div>
+                
+                <div>
+                    <h4 class="text-white font-semibold mb-4">Asosiy</h4>
+                    <ul class="space-y-2">
+                        <li><a href="/" class="text-gray-400 hover:text-primary transition-colors no-underline">Bosh sahifa</a></li>
+                        <li><a href="/products/" class="text-gray-400 hover:text-primary transition-colors no-underline">Mahsulotlar</a></li>
+                        <li><a href="/shops/" class="text-gray-400 hover:text-primary transition-colors no-underline">Do'konlar</a></li>
+                        <li><a href="/categories/" class="text-gray-400 hover:text-primary transition-colors no-underline">Kategoriyalar</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-white font-semibold mb-4">Yordam</h4>
+                    <ul class="space-y-2">
+                        <li><a href="/about/" class="text-gray-400 hover:text-primary transition-colors no-underline">Biz haqimizda</a></li>
+                        <li><a href="/contact/" class="text-gray-400 hover:text-primary transition-colors no-underline">Aloqa</a></li>
+                        <li><a href="/faq/" class="text-gray-400 hover:text-primary transition-colors no-underline">FAQ</a></li>
+                        <li><a href="/terms/" class="text-gray-400 hover:text-primary transition-colors no-underline">Foydalanish shartlari</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-white font-semibold mb-4">Aloqa</h4>
+                    <ul class="space-y-2">
+                        <li class="text-gray-400"><i class="fas fa-phone text-primary mr-2"></i> +998 90 123 45 67</li>
+                        <li class="text-gray-400"><i class="fas fa-envelope text-primary mr-2"></i> info@agromarket.uz</li>
+                        <li class="text-gray-400"><i class="fas fa-map-marker-alt text-primary mr-2"></i> Toshkent, O'zbekiston</li>
+                    </ul>
+                    <div class="flex gap-3 mt-4">
+                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center text-white hover:bg-primary transition-colors">
+                            <i class="fab fa-telegram"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center text-white hover:bg-primary transition-colors">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center text-white hover:bg-primary transition-colors">
+                            <i class="fab fa-facebook"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 pt-8 text-center">
+                <p class="text-gray-400 text-sm">&copy; 2025 Agro Market. Barcha huquqlar himoyalangan.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{% static 'js/config.js' %}"></script>
+    <script src="{% static 'js/store.js' %}"></script>
+    <script src="{% static 'js/api.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+    <script src="{% static 'js/category.js' %}"></script>
+</body>
+</html>

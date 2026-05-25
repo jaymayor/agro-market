@@ -1,0 +1,1139 @@
+🌾
+AGRO MARKET
+Dehqonchilik mahsulotlarini online sotish platformasi
+TEXNIK TOPSHIRIQ  |  Python + Django Backend
+Versiya 1.0  |  2025-yil
+Loyiha nomi
+Agro Market — Dehqonchilik mahsulotlarini online sotish platformasi
+Backend texnologiya
+Python 3.12 + Django 5.x + Django REST Framework 3.15
+Ma'lumotlar bazasi
+PostgreSQL 17 (asosiy) + Redis 7 (kesh + sessiya)
+Autentifikatsiya
+JWT (djangorestframework-simplejwt)
+Qidiruv tizimi
+Elasticsearch 8.x (django-elasticsearch-dsl)
+Fayl saqlash
+AWS S3 / MinIO (django-storages)
+Vazifa navbati
+Celery + Redis Broker
+API hujjatlash
+drf-spectacular (OpenAPI 3.0 / Swagger UI)
+Containerizatsiya
+Docker + Docker Compose
+Web server
+Gunicorn + Nginx
+Frontend
+Next.js 14 (React) — alohida repo
+Hujjat versiyasi
+1.0 | 2025-yil
+1. LOYIHA HAQIDA
+Agro Market — fermerlar va dehqonlarni iste'molchilar hamda ulgurji xaridorlar bilan to'g'ridan-to'g'ri bog'laydigan B2C/C2C elektron tijorat platformasidir. Backend Python Django da yoziladi, REST API orqali frontend va mobil ilovaga xizmat ko'rsatadi.
+1.1 Maqsad
+Fermerlar uchun raqamli savdo kanali yaratish
+Vositachilarni kamaytirish, narxni shaffof qilish
+Xaridorlar uchun sifatli mahsulotlarga qulay kirish
+Django REST Framework orqali to'liq API backend qurish
+2. TEXNOLOGIYALAR STEKI
+Kategoriya
+Texnologiya
+Versiya
+Maqsad
+Backend til
+Python
+3.12+
+Asosiy dasturlash tili
+Web framework
+Django
+5.x
+Asosiy backend framework
+REST API
+Django REST Framework
+3.15+
+API yaratish
+Auth
+djangorestframework-simplejwt
+5.x
+JWT token boshqaruvi
+Ma'lumotlar bazasi
+PostgreSQL
+16
+Asosiy relatsion DB
+ORM
+Django ORM
+built-in
+DB bilan ishlash
+DB migratsiya
+Django Migrations
+built-in
+Sxema boshqaruvi
+Kesh
+Redis
+7
+Kesh + sessiya + broker
+Django-Redis
+django-redis
+5.x
+Django Redis integratsiya
+Qidiruv
+Elasticsearch
+8.x
+To'liq matn qidiruvi
+ES integratsiya
+django-elasticsearch-dsl
+8.x
+Django ↔ ES sinxron
+Vazifa navbati
+Celery
+5.x
+Asinxron vazifalar
+Celery monitoring
+Flower
+2.x
+Celery web monitoring
+Fayl saqlash
+django-storages + boto3
+1.x
+S3 fayl yuklash
+Rasm qayta ishlash
+Pillow
+10.x
+Rasm o'lchami, format
+API hujjat
+drf-spectacular
+0.27+
+Swagger / OpenAPI
+CORS
+django-cors-headers
+4.x
+Frontend CORS ruxsati
+Filtrlash
+django-filter
+23.x
+API filterlash
+Env boshqaruvi
+python-decouple
+3.x
+.env fayllarni o'qish
+To'lov Click
+requests (custom)
+-
+Click API integratsiya
+To'lov Payme
+requests (custom)
+-
+Payme API integratsiya
+SMS
+requests (Eskiz API)
+-
+OTP SMS yuborish
+Email
+django.core.mail + SMTP
+built-in
+Email yuborish
+Push
+fcm-django
+2.x
+Firebase Push xabar
+Xavfsizlik
+django-axes
+6.x
+Brute-force himoya
+Rate limiting
+django-ratelimit
+4.x
+API cheklash
+Logging
+Python logging + Sentry
+-
+Xatolar kuzatish
+Test
+pytest-django + factory_boy
+-
+Avtomatik testlar
+Linter
+flake8 + black + isort
+-
+Kod sifati
+Container
+Docker + Docker Compose
+-
+Muhit izolyatsiyasi
+Web server
+Gunicorn + Nginx
+-
+Production server
+CI/CD
+GitHub Actions
+-
+Avtomatik deploy
+3. LOYIHA PAPKA STRUKTURASI
+Quyida Django loyihasining to'liq papka tuzilmasi keltirilgan. Har bir Django app alohida funksional modulga javob beradi:
+agro_market/                    # Asosiy loyiha papkasi
+│
+├── config/                     # Django sozlamalari
+│   ├── settings/
+│   │   ├── __init__.py
+│   │   ├── base.py             # Asosiy sozlamalar
+│   │   ├── development.py      # Dev muhit
+│   │   └── production.py       # Production muhit
+│   ├── urls.py                 # Asosiy URL marshrutlash
+│   ├── wsgi.py
+│   └── asgi.py                 # WebSocket uchun
+│
+├── apps/                       # Barcha Django ilovalar
+│   ├── accounts/               # Foydalanuvchilar va autentifikatsiya
+│   │   ├── models.py           # User, OTPCode, UserAddress
+│   │   ├── serializers.py      # API serialayzerlar
+│   │   ├── views.py            # API ko'rinishlar
+│   │   ├── urls.py             # URL marshrutlar
+│   │   ├── permissions.py      # Ruxsatlar
+│   │   ├── tasks.py            # Celery vazifalari
+│   │   ├── admin.py            # Django admin
+│   │   └── tests/
+│   │
+│   ├── shops/                  # Do'konlar (Sotuvchilar)
+│   │   ├── models.py           # Shop, ShopDocument
+│   │   ├── serializers.py
+│   │   ├── views.py
+│   │   ├── urls.py
+│   │   └── admin.py
+│   │
+│   ├── products/               # Mahsulotlar
+│   │   ├── models.py           # Product, Category, ProductImage
+│   │   ├── serializers.py
+│   │   ├── views.py
+│   │   ├── urls.py
+│   │   ├── filters.py          # django-filter filterlash
+│   │   ├── documents.py        # Elasticsearch hujjatlar
+│   │   └── admin.py
+│   │
+│   ├── orders/                 # Buyurtmalar
+│   │   ├── models.py           # Order, OrderItem
+│   │   ├── serializers.py
+│   │   ├── views.py
+│   │   ├── urls.py
+│   │   └── signals.py          # Django signals
+│   │
+│   ├── payments/               # To'lovlar
+│   │   ├── models.py           # Payment, Transaction
+│   │   ├── serializers.py
+│   │   ├── views.py
+│   │   ├── urls.py
+│   │   ├── click.py            # Click integratsiya
+│   │   └── payme.py            # Payme integratsiya
+│   │
+│   ├── delivery/               # Yetkazib berish
+│   │   ├── models.py           # DeliveryZone, DeliveryOrder
+│   │   ├── serializers.py
+│   │   └── views.py
+│   │
+│   ├── reviews/                # Sharhlar va reyting
+│   │   ├── models.py           # Review, Rating
+│   │   ├── serializers.py
+│   │   └── views.py
+│   │
+│   ├── notifications/          # Bildirishnomalar
+│   │   ├── models.py           # Notification
+│   │   ├── tasks.py            # Celery: SMS, Email, Push
+│   │   └── views.py
+│   │
+│   └── analytics/              # Admin statistika
+│       ├── views.py            # Dashboard API
+│       └── serializers.py
+│
+├── core/                       # Umumiy yordamchi kodlar
+│   ├── models.py               # BaseModel (timestamps)
+│   ├── permissions.py          # Umumiy ruxsatlar
+│   ├── pagination.py           # Sahifalash
+│   ├── exceptions.py           # Custom xato handleri
+│   └── utils.py                # Yordamchi funksiyalar
+│
+├── static/                     # Statik fayllar
+├── media/                      # Yuklangan fayllar (dev)
+├── requirements/
+│   ├── base.txt                # Asosiy kutubxonalar
+│   ├── development.txt         # Faqat dev uchun
+│   └── production.txt          # Production uchun
+├── .env.example               # Muhit o'zgaruvchilari namunasi
+├── manage.py
+├── Dockerfile
+├── docker-compose.yml
+└── pytest.ini
+4. FOYDALANUVCHI ROLLARI
+Platforma uch asosiy rol asosida ishlaydi. Django'ning o'rnatilgan User modeli kengaytirilib, AbstractUser dan meros olinadi.
+Funksiya
+SuperAdmin
+Sotuvchi
+Xaridor
+Barcha foydalanuvchilarni boshqarish
+✅
+❌
+❌
+Mahsulot qo'shish/tahrirlash
+✅ (barcha)
+✅ (o'ziniki)
+❌
+Mahsulot ko'rish
+✅
+✅
+✅
+Buyurtma berish
+❌
+❌
+✅
+Buyurtmalarni tasdiqlash
+✅
+✅ (o'ziniki)
+❌
+Do'kon ochish
+❌
+✅
+❌
+Kategoriya boshqarish
+✅
+❌
+❌
+Sharhlar yozish
+❌
+❌
+✅
+Sharhlarga javob berish
+✅
+✅
+❌
+Statistika ko'rish
+✅ (barcha)
+✅ (o'z do'koni)
+❌
+Komissiya belgilash
+✅
+❌
+❌
+To'lovlarni nazorat qilish
+✅ (barcha)
+✅ (o'ziniki)
+✅ (o'ziniki)
+Django Admin panelga kirish
+✅
+❌
+❌
+accounts/models.py — User modeli
+from django.contrib.auth.models import AbstractUser
+from django.db import models
+import uuid
+class User(AbstractUser):
+    class Role(models.TextChoices):
+        ADMIN   = 'admin',  'Admin'
+        SELLER  = 'seller', 'Sotuvchi'
+        BUYER   = 'buyer',  'Xaridor'
+    id          = models.UUIDField(primary_key=True, default=uuid.uuid4)
+    phone       = models.CharField(max_length=15, unique=True)
+    role        = models.CharField(max_length=10, choices=Role.choices, default=Role.BUYER)
+    is_verified = models.BooleanField(default=False)
+    avatar      = models.ImageField(upload_to='avatars/', null=True, blank=True)
+    created_at  = models.DateTimeField(auto_now_add=True)
+    USERNAME_FIELD  = 'phone'
+    REQUIRED_FIELDS = ['username']
+5. DJANGO MODELLARI (MA'LUMOTLAR BAZASI)
+5.1 core/models.py — Asosiy BaseModel
+Barcha modellar ushbu asosiy modeldan meros oladi — avtomatik UUID va vaqt maydonlari bilan:
+import uuid
+from django.db import models
+class BaseModel(models.Model):
+    id         = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    class Meta:
+        abstract = True
+5.2 shops/models.py — Do'kon modeli
+from django.db import models
+from core.models import BaseModel
+from apps.accounts.models import User
+class Shop(BaseModel):
+    class Status(models.TextChoices):
+        PENDING   = 'pending',   'Kutilmoqda'
+        ACTIVE    = 'active',    'Faol'
+        SUSPENDED = 'suspended', 'To'xtatilgan'
+        CLOSED    = 'closed',    'Yopilgan'
+    owner         = models.OneToOneField(User, on_delete=models.CASCADE, related_name='shop')
+    name          = models.CharField(max_length=255)
+    slug          = models.SlugField(unique=True)
+    description   = models.TextField(blank=True)
+    logo          = models.ImageField(upload_to='shops/logos/')
+    banner        = models.ImageField(upload_to='shops/banners/', null=True, blank=True)
+    region        = models.CharField(max_length=100)
+    district      = models.CharField(max_length=100)
+    address       = models.TextField()
+    latitude      = models.DecimalField(max_digits=9, decimal_places=6, null=True)
+    longitude     = models.DecimalField(max_digits=9, decimal_places=6, null=True)
+    status        = models.CharField(max_length=15, choices=Status.choices, default=Status.PENDING)
+    rating        = models.DecimalField(max_digits=3, decimal_places=2, default=0.00)
+    total_sales   = models.PositiveIntegerField(default=0)
+    commission    = models.DecimalField(max_digits=5, decimal_places=2, default=5.00)
+    is_verified   = models.BooleanField(default=False)
+    class Meta:
+        ordering = ['-created_at']
+    def __str__(self):
+        return self.name
+5.3 products/models.py — Mahsulot modeli
+class Category(BaseModel):
+    name     = models.CharField(max_length=200)
+    slug     = models.SlugField(unique=True)
+    parent   = models.ForeignKey('self', null=True, blank=True, on_delete=models.SET_NULL)
+    icon     = models.ImageField(upload_to='categories/', null=True, blank=True)
+    ordering = models.PositiveIntegerField(default=0)
+    def __str__(self): return self.name
+class Product(BaseModel):
+    class Unit(models.TextChoices):
+        KG    = 'kg',    'Kilogramm'
+        GRAMM = 'gramm', 'Gramm'
+        TONNA = 'tonna', 'Tonna'
+        LITR  = 'litr',  'Litr'
+        DONA  = 'dona',  'Dona'
+        QUTI  = 'quti',  'Quti'
+    class Status(models.TextChoices):
+        DRAFT    = 'draft',    'Qoralama'
+        PENDING  = 'pending',  'Moderatsiyada'
+        ACTIVE   = 'active',   'Faol'
+        REJECTED = 'rejected', 'Rad etilgan'
+        HIDDEN   = 'hidden',   'Yashirilgan'
+    shop           = models.ForeignKey(Shop, on_delete=models.CASCADE, related_name='products')
+    category       = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
+    name_uz        = models.CharField(max_length=500)
+    name_ru        = models.CharField(max_length=500, blank=True)
+    description_uz = models.TextField()
+    description_ru = models.TextField(blank=True)
+    price          = models.DecimalField(max_digits=12, decimal_places=2)
+    discount_price = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
+    unit           = models.CharField(max_length=10, choices=Unit.choices, default=Unit.KG)
+    min_order_qty  = models.DecimalField(max_digits=10, decimal_places=2, default=1)
+    stock_qty      = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    origin_region  = models.CharField(max_length=100, blank=True)
+    harvest_date   = models.DateField(null=True, blank=True)
+    expiry_date    = models.DateField(null=True, blank=True)
+    is_organic     = models.BooleanField(default=False)
+    status         = models.CharField(max_length=15, choices=Status.choices, default=Status.PENDING)
+    rating         = models.DecimalField(max_digits=3, decimal_places=2, default=0.00)
+    views_count    = models.PositiveIntegerField(default=0)
+    sales_count    = models.PositiveIntegerField(default=0)
+    slug           = models.SlugField(unique=True)
+    class Meta:
+        ordering = ['-created_at']
+        indexes  = [
+            models.Index(fields=['status', 'shop']),
+            models.Index(fields=['category', 'status']),
+        ]
+class ProductImage(BaseModel):
+    product  = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images')
+    image    = models.ImageField(upload_to='products/')
+    is_main  = models.BooleanField(default=False)
+    ordering = models.PositiveIntegerField(default=0)
+5.4 orders/models.py — Buyurtma modeli
+class Order(BaseModel):
+    class Status(models.TextChoices):
+        NEW        = 'new',        'Yangi'
+        CONFIRMED  = 'confirmed',  'Tasdiqlandi'
+        PREPARING  = 'preparing',  'Tayyorlanmoqda'
+        SHIPPED    = 'shipped',    'Yo'lda'
+        DELIVERED  = 'delivered',  'Yetkazildi'
+        COMPLETED  = 'completed',  'Yakunlandi'
+        CANCELLED  = 'cancelled',  'Bekor qilindi'
+    class PaymentMethod(models.TextChoices):
+        CLICK  = 'click',  'Click'
+        PAYME  = 'payme',  'Payme'
+        UZCARD = 'uzcard', 'Uzcard'
+        CASH   = 'cash',   'Naqd'
+        CARD   = 'card',   'Karta'
+    buyer            = models.ForeignKey(User, on_delete=models.PROTECT, related_name='orders')
+    shop             = models.ForeignKey(Shop, on_delete=models.PROTECT, related_name='orders')
+    status           = models.CharField(max_length=15, choices=Status.choices, default=Status.NEW)
+    total_amount     = models.DecimalField(max_digits=12, decimal_places=2)
+    delivery_fee     = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    payment_method   = models.CharField(max_length=10, choices=PaymentMethod.choices)
+    payment_status   = models.CharField(max_length=10, default='pending')
+    delivery_address = models.JSONField()   # {city, district, street, lat, lng}
+    tracking_number  = models.CharField(max_length=100, blank=True)
+    notes            = models.TextField(blank=True)
+    delivered_at     = models.DateTimeField(null=True, blank=True)
+class OrderItem(BaseModel):
+    order    = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
+    product  = models.ForeignKey(Product, on_delete=models.PROTECT)
+    quantity = models.DecimalField(max_digits=10, decimal_places=2)
+    price    = models.DecimalField(max_digits=12, decimal_places=2)  # Buyurtma vaqtidagi narx
+6. API ENDPOINTLAR (Django REST Framework)
+Barcha API endpointlar /api/v1/ prefiksi bilan boshlanadi. JWT token talab qiluvchi endpointlar Authorization: Bearer <token> headerini kutadi.
+6.1 Autentifikatsiya API
+Method
+URL
+Tavsif
+Ruxsat
+POST
+/api/v1/auth/send-otp/
+Telefonga OTP yuborish
+Hamma
+POST
+/api/v1/auth/verify-otp/
+OTP tekshirish va kirish
+Hamma
+POST
+/api/v1/auth/register/
+Yangi foydalanuvchi ro'yxatdan o'tkazish
+Hamma
+POST
+/api/v1/auth/login/
+Email/parol bilan kirish
+Hamma
+POST
+/api/v1/auth/token/refresh/
+Access tokenni yangilash
+Hamma
+POST
+/api/v1/auth/logout/
+Chiqish (token blacklist)
+Autentifikatsiya
+GET
+/api/v1/auth/me/
+Joriy foydalanuvchi ma'lumoti
+Autentifikatsiya
+PATCH
+/api/v1/auth/me/
+Profilni yangilash
+Autentifikatsiya
+POST
+/api/v1/auth/change-password/
+Parolni o'zgartirish
+Autentifikatsiya
+6.2 Kategoriyalar API
+Method
+URL
+Tavsif
+Ruxsat
+GET
+/api/v1/categories/
+Barcha kategoriyalar daraxti
+Hamma
+POST
+/api/v1/categories/
+Yangi kategoriya yaratish
+Admin
+GET
+/api/v1/categories/{id}/
+Bitta kategoriya
+Hamma
+PUT
+/api/v1/categories/{id}/
+Kategoriyani yangilash
+Admin
+DELETE
+/api/v1/categories/{id}/
+Kategoriyani o'chirish
+Admin
+6.3 Mahsulotlar API
+Method
+URL
+Tavsif
+Ruxsat
+GET
+/api/v1/products/
+Mahsulotlar ro'yxati (filter, search, sort)
+Hamma
+POST
+/api/v1/products/
+Yangi mahsulot qo'shish
+Sotuvchi
+GET
+/api/v1/products/{id}/
+Bitta mahsulot
+Hamma
+PATCH
+/api/v1/products/{id}/
+Mahsulotni yangilash
+Sotuvchi (o'ziniki)
+DELETE
+/api/v1/products/{id}/
+Mahsulotni o'chirish
+Sotuvchi/Admin
+POST
+/api/v1/products/{id}/images/
+Mahsulotga rasm qo'shish
+Sotuvchi
+DELETE
+/api/v1/products/{id}/images/{img_id}/
+Rasmni o'chirish
+Sotuvchi
+GET
+/api/v1/products/search/
+Elasticsearch qidiruvi
+Hamma
+PATCH
+/api/v1/products/{id}/moderate/
+Moderatsiya (tasdiqlash/rad)
+Admin
+6.4 Do'konlar API
+Method
+URL
+Tavsif
+Ruxsat
+GET
+/api/v1/shops/
+Do'konlar ro'yxati
+Hamma
+POST
+/api/v1/shops/
+Do'kon ochish arizasi
+Sotuvchi (bir marta)
+GET
+/api/v1/shops/{id}/
+Do'kon sahifasi
+Hamma
+PATCH
+/api/v1/shops/{id}/
+Do'konni tahrirlash
+Sotuvchi (o'ziniki)
+GET
+/api/v1/shops/{id}/products/
+Do'kon mahsulotlari
+Hamma
+GET
+/api/v1/shops/{id}/reviews/
+Do'kon sharhlari
+Hamma
+PATCH
+/api/v1/shops/{id}/status/
+Do'kon statusini o'zgartirish
+Admin
+6.5 Buyurtmalar API
+Method
+URL
+Tavsif
+Ruxsat
+GET
+/api/v1/orders/
+Buyurtmalar ro'yxati (o'ziniki)
+Autentifikatsiya
+POST
+/api/v1/orders/
+Yangi buyurtma berish
+Xaridor
+GET
+/api/v1/orders/{id}/
+Bitta buyurtma
+Autentifikatsiya
+PATCH
+/api/v1/orders/{id}/status/
+Buyurtma holatini o'zgartirish
+Sotuvchi/Admin
+POST
+/api/v1/orders/{id}/cancel/
+Buyurtmani bekor qilish
+Xaridor
+GET
+/api/v1/seller/orders/
+Sotuvchining barcha buyurtmalari
+Sotuvchi
+GET
+/api/v1/admin/orders/
+Barcha buyurtmalar
+Admin
+6.6 To'lovlar API
+Method
+URL
+Tavsif
+Ruxsat
+POST
+/api/v1/payments/initiate/
+To'lovni boshlash (Click/Payme)
+Xaridor
+POST
+/api/v1/payments/click/prepare/
+Click Prepare webhook
+Tizim (Click)
+POST
+/api/v1/payments/click/complete/
+Click Complete webhook
+Tizim (Click)
+POST
+/api/v1/payments/payme/
+Payme RPC webhook
+Tizim (Payme)
+GET
+/api/v1/payments/{id}/
+To'lov holati
+Autentifikatsiya
+POST
+/api/v1/payments/{id}/refund/
+Qaytarish so'rovi
+Xaridor/Admin
+6.7 Sharhlar API
+Method
+URL
+Tavsif
+Ruxsat
+GET
+/api/v1/products/{id}/reviews/
+Mahsulot sharhlari
+Hamma
+POST
+/api/v1/products/{id}/reviews/
+Sharh yozish
+Xaridor (buyurtma bergan)
+PATCH
+/api/v1/reviews/{id}/
+Sharhni tahrirlash
+Muallif
+DELETE
+/api/v1/reviews/{id}/
+Sharhni o'chirish
+Muallif/Admin
+POST
+/api/v1/reviews/{id}/reply/
+Sharhga javob berish
+Sotuvchi
+6.8 Admin API
+Method
+URL
+Tavsif
+Ruxsat
+GET
+/api/v1/admin/dashboard/
+Umumiy statistika
+Admin
+GET
+/api/v1/admin/users/
+Foydalanuvchilar ro'yxati
+Admin
+PATCH
+/api/v1/admin/users/{id}/block/
+Foydalanuvchini bloklash
+Admin
+GET
+/api/v1/admin/shops/pending/
+Kutayotgan do'konlar
+Admin
+PATCH
+/api/v1/admin/shops/{id}/approve/
+Do'konni tasdiqlash
+Admin
+GET
+/api/v1/admin/products/pending/
+Moderatsiyadagi mahsulotlar
+Admin
+GET
+/api/v1/admin/analytics/sales/
+Savdo analitikasi
+Admin
+GET
+/api/v1/admin/analytics/export/
+Excel/CSV eksport
+Admin
+7. SERIALAYZER NAMUNALARI
+7.1 Mahsulot serialayzer
+from rest_framework import serializers
+from .models import Product, ProductImage, Category
+class ProductImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductImage
+        fields = ['id', 'image', 'is_main', 'ordering']
+class ProductListSerializer(serializers.ModelSerializer):
+    main_image  = serializers.SerializerMethodField()
+    shop_name   = serializers.CharField(source='shop.name', read_only=True)
+    actual_price = serializers.SerializerMethodField()
+    class Meta:
+        model = Product
+        fields = ['id', 'name_uz', 'name_ru', 'actual_price', 'unit',
+                  'rating', 'main_image', 'shop_name', 'is_organic',
+                  'stock_qty', 'origin_region', 'slug']
+    def get_main_image(self, obj):
+        img = obj.images.filter(is_main=True).first()
+        return img.image.url if img else None
+    def get_actual_price(self, obj):
+        return obj.discount_price if obj.discount_price else obj.price
+class ProductDetailSerializer(ProductListSerializer):
+    images = ProductImageSerializer(many=True, read_only=True)
+    class Meta(ProductListSerializer.Meta):
+        fields = ProductListSerializer.Meta.fields + [
+            'description_uz', 'description_ru', 'price', 'discount_price',
+            'min_order_qty', 'harvest_date', 'expiry_date',
+            'images', 'views_count', 'sales_count',
+        ]
+8. VIEW NAMUNALARI
+8.1 Mahsulot ViewSet
+from rest_framework import viewsets, permissions, filters, status
+from rest_framework.decorators import action
+from rest_framework.response import Response
+from django_filters.rest_framework import DjangoFilterBackend
+from .models import Product
+from .serializers import ProductListSerializer, ProductDetailSerializer
+from .filters import ProductFilter
+from core.permissions import IsSellerOwner, IsAdminUser
+class ProductViewSet(viewsets.ModelViewSet):
+    queryset = Product.objects.select_related('shop', 'category')\
+                              .prefetch_related('images')
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    filterset_class = ProductFilter
+    search_fields   = ['name_uz', 'name_ru', 'description_uz']
+    ordering_fields = ['price', 'rating', 'created_at', 'sales_count']
+    def get_serializer_class(self):
+        if self.action == 'list': return ProductListSerializer
+        return ProductDetailSerializer
+    def get_permissions(self):
+        if self.action in ['create']:
+            return [permissions.IsAuthenticated(), IsSellerOwner()]
+        if self.action in ['update', 'partial_update', 'destroy']:
+            return [permissions.IsAuthenticated(), IsSellerOwner()]
+        return [permissions.AllowAny()]
+    def perform_create(self, serializer):
+        serializer.save(shop=self.request.user.shop)
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        # Ko'rishlar sonini oshirish (Redis orqali)
+        instance.views_count = models.F('views_count') + 1
+        instance.save(update_fields=['views_count'])
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
+    @action(detail=True, methods=['patch'], permission_classes=[IsAdminUser])
+    def moderate(self, request, pk=None):
+        product = self.get_object()
+        new_status = request.data.get('status')
+        if new_status not in ['active', 'rejected']:
+            return Response({'error': 'Noto'g'ri status'}, status=400)
+        product.status = new_status
+        product.save()
+        return Response({'status': new_status})
+9. CELERY ASINXRON VAZIFALAR
+Celery Redis bilan ishlatiladi. Og'ir va vaqt talab qiladigan operatsiyalar asinxron bajariladi:
+# notifications/tasks.py
+from celery import shared_task
+from django.core.mail import send_mail
+import requests
+@shared_task(bind=True, max_retries=3)
+def send_sms_otp(self, phone: str, otp_code: str):
+    """SMS OTP yuborish — Eskiz API orqali"""
+    try:
+        response = requests.post(
+            'https://notify.eskiz.uz/api/message/sms/send',
+            headers={'Authorization': f'Bearer {settings.ESKIZ_TOKEN}'},
+            data={'mobile_phone': phone, 'message': f'Agro Market: {otp_code}'}
+        )
+        response.raise_for_status()
+    except Exception as exc:
+        raise self.retry(exc=exc, countdown=30)
+@shared_task
+def send_order_notification(order_id: str):
+    """Buyurtma holati o'zgarganda email + SMS"""
+    from apps.orders.models import Order
+    order = Order.objects.select_related('buyer', 'shop').get(id=order_id)
+    # Email yuborish
+    send_mail(
+        subject=f'Buyurtma #{order.id[:8]} holati yangilandi',
+        message=f'Buyurtmangiz holati: {order.get_status_display()}',
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        recipient_list=[order.buyer.email],
+    )
+    # SMS ham yuborish
+    send_sms_otp.delay(order.buyer.phone, f'Buyurtma: {order.get_status_display()}')
+@shared_task
+def update_product_rating(product_id: str):
+    """Sharh qo'shilganda mahsulot reytingini qayta hisoblash"""
+    from apps.reviews.models import Review
+    from apps.products.models import Product
+    avg = Review.objects.filter(product_id=product_id).aggregate(
+        avg=models.Avg('rating'))['avg']
+    Product.objects.filter(id=product_id).update(rating=avg or 0)
+10. TO'LOV TIZIMI INTEGRATSIYASI
+10.1 Click integratsiya
+# payments/click.py
+import hashlib
+from django.conf import settings
+class ClickPayment:
+    MERCHANT_ID  = settings.CLICK_MERCHANT_ID
+    SERVICE_ID   = settings.CLICK_SERVICE_ID
+    SECRET_KEY   = settings.CLICK_SECRET_KEY
+    @staticmethod
+    def verify_signature(data: dict) -> bool:
+        sign_string = (f"{data['click_trans_id']}{data['service_id']}"
+                       f"{ClickPayment.SECRET_KEY}{data['merchant_trans_id']}"
+                       f"{data['amount']}{data['action']}{data['sign_time']}")
+        expected = hashlib.md5(sign_string.encode()).hexdigest()
+        return expected == data.get('sign_string')
+    @staticmethod
+    def prepare(request_data: dict) -> dict:
+        if not ClickPayment.verify_signature(request_data):
+            return {'error': -1, 'error_note': 'Noto'g'ri imzo'}
+        # Buyurtmani topish
+        try:
+            order = Order.objects.get(id=request_data['merchant_trans_id'])
+        except Order.DoesNotExist:
+            return {'error': -5, 'error_note': 'Buyurtma topilmadi'}
+        return {'error': 0, 'error_note': 'Success'}
+10.2 Payme integratsiya
+# payments/payme.py — Payme JSON-RPC 2.0
+class PaymePayment:
+    METHODS = {
+        'CheckPerformTransaction': 'check_perform',
+        'CreateTransaction':       'create_transaction',
+        'PerformTransaction':      'perform_transaction',
+        'CancelTransaction':       'cancel_transaction',
+        'CheckTransaction':        'check_transaction',
+    }
+    def dispatch(self, method: str, params: dict) -> dict:
+        handler = getattr(self, self.METHODS.get(method, ''), None)
+        if not handler:
+            return {'error': {'code': -32601, 'message': 'Method not found'}}
+        return handler(params)
+11. DJANGO SOZLAMALARI
+11.1 config/settings/base.py asosiy sozlamalar
+from pathlib import Path
+from decouple import config
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
+SECRET_KEY = config('SECRET_KEY')
+DEBUG = config('DEBUG', default=False, cast=bool)
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    # ... default apps ...
+    # Uchinchi tomon
+    'rest_framework',
+    'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
+    'django_filters',
+    'corsheaders',
+    'django_elasticsearch_dsl',
+    'storages',
+    'drf_spectacular',
+    # Loyiha ilovalar
+    'apps.accounts',
+    'apps.shops',
+    'apps.products',
+    'apps.orders',
+    'apps.payments',
+    'apps.reviews',
+    'apps.notifications',
+    'apps.analytics',
+]
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend',
+        'rest_framework.filters.SearchFilter',
+        'rest_framework.filters.OrderingFilter',
+    ],
+    'DEFAULT_PAGINATION_CLASS': 'core.pagination.StandardPagination',
+    'PAGE_SIZE': 20,
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME':  timedelta(minutes=15),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=30),
+    'ROTATE_REFRESH_TOKENS':  True,
+    'BLACKLIST_AFTER_ROTATION': True,
+}
+CACHES = {
+    'default': {
+        'BACKEND':  'django_redis.cache.RedisCache',
+        'LOCATION': config('REDIS_URL', default='redis://localhost:6379/1'),
+    }
+}
+CELERY_BROKER_URL        = config('REDIS_URL', default='redis://localhost:6379/0')
+CELERY_RESULT_BACKEND    = CELERY_BROKER_URL
+CELERY_ACCEPT_CONTENT    = ['json']
+CELERY_TASK_SERIALIZER   = 'json'
+12. DOCKER VA DEPLOY
+12.1 Dockerfile
+FROM python:3.12-slim
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
+WORKDIR /app
+RUN apt-get update && apt-get install -y \
+    gcc libpq-dev curl && rm -rf /var/lib/apt/lists/*
+COPY requirements/production.txt .
+RUN pip install --no-cache-dir -r production.txt
+COPY . .
+RUN python manage.py collectstatic --noinput
+EXPOSE 8000
+CMD ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "4"]
+12.2 docker-compose.yml
+version: '3.9'
+services:
+  web:
+    build: .
+    command: gunicorn config.wsgi:application --bind 0.0.0.0:8000
+    volumes:
+      - .:/app
+      - static_volume:/app/staticfiles
+    env_file: .env
+    depends_on: [db, redis]
+  db:
+    image: postgres:16
+    volumes: [postgres_data:/var/lib/postgresql/data/]
+    environment:
+      POSTGRES_DB: agromarket
+      POSTGRES_USER: agrouser
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+  redis:
+    image: redis:7-alpine
+  celery:
+    build: .
+    command: celery -A config worker -l info
+    env_file: .env
+    depends_on: [db, redis]
+  celery-beat:
+    build: .
+    command: celery -A config beat -l info
+    env_file: .env
+    depends_on: [redis]
+  flower:
+    build: .
+    command: celery -A config flower --port=5555
+    ports: ['5555:5555']
+    depends_on: [redis]
+  nginx:
+    image: nginx:alpine
+    ports: ['80:80', '443:443']
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - static_volume:/staticfiles
+  elasticsearch:
+    image: elasticsearch:8.11.0
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+    volumes: [es_data:/usr/share/elasticsearch/data]
+volumes:
+  postgres_data:
+  static_volume:
+  es_data:
+13. XAVFSIZLIK TALABLARI
+Xavf turi
+Himoya usuli
+Django vositasi
+SQL Injection
+ORM + parametrlangan so'rovlar
+Django ORM (built-in)
+XSS
+Template auto-escape, DRF serialayzer
+Django templates, DRF
+CSRF
+CSRF token (form so'rovlari)
+django.middleware.csrf
+Brute-force
+Login urinishlarni cheklash
+django-axes
+Rate Limiting
+API so'rovlarni cheklash
+django-ratelimit
+JWT muddati
+15 daqiqa access, 30 kun refresh
+simplejwt settings
+CORS
+Faqat ruxsat etilgan domenlar
+django-cors-headers
+Maxfiy ma'lumot
+.env fayl, settings dan o'qish
+python-decouple
+Parol shifrlash
+PBKDF2 (Django default)
+django.contrib.auth
+HTTPS
+Nginx SSL + Let's Encrypt
+Nginx konfiguratsiya
+Media fayl
+S3 private bucket, signed URL
+django-storages + boto3
+PCI DSS
+Karta ma'lumoti saqlanmaydi
+Faqat tokenlar
+14. TEST TALABLARI
+14.1 Test turlari
+Unit testlar: har bir model, serialayzer, view alohida
+Integration testlar: API endpointlarni to'liq sinash
+To'lov webhook testlari: Click va Payme mock so'rovlar
+Performance testlari: Locust bilan load testing
+14.2 pytest konfiguratsiya
+# pytest.ini
+[pytest]
+DJANGO_SETTINGS_MODULE = config.settings.development
+python_files = tests/*.py tests/**/*.py
+addopts = --tb=short --strict-markers -v
+# Test misoli — products/tests/test_api.py
+import pytest
+from rest_framework.test import APIClient
+from factory_boy import ProductFactory, UserFactory
+@pytest.mark.django_db
+class TestProductAPI:
+    def test_list_products(self, api_client):
+        ProductFactory.create_batch(5)
+        response = api_client.get('/api/v1/products/')
+        assert response.status_code == 200
+        assert response.data['count'] == 5
+    def test_create_product_requires_seller(self, api_client, buyer_user):
+        api_client.force_authenticate(user=buyer_user)
+        response = api_client.post('/api/v1/products/', data={...})
+        assert response.status_code == 403
+15. MVP AMALGA OSHIRISH REJASI
+Bosqich
+Muddat
+Nima amalga oshiriladi
+Bosqich 1: Poydevor
+1-2 hafta
+Django loyiha sozlamalari, Docker, PostgreSQL, User modeli, JWT auth, OTP tizimi
+Bosqich 2: Asosiy modellar
+3-4 hafta
+Category, Shop, Product modellari, CRUD API, Django Admin, Elasticsearch ulash
+Bosqich 3: Buyurtma tizimi
+5-6 hafta
+Order, OrderItem, savat logikasi, buyurtma holatlari, Celery vazifalar
+Bosqich 4: To'lov
+7-8 hafta
+Click va Payme integratsiyasi, webhook handler, to'lov holat boshqaruvi
+Bosqich 5: Qo'shimcha
+9-10 hafta
+Sharhlar, reyting, bildirishnomalar, fermer do'kon sahifasi, statistika API
+Bosqich 6: Sifat
+11-12 hafta
+Testlar yozish, xavfsizlik audit, load testing, Swagger hujjatlash, deploy
+16. MUHIT O'ZGARUVCHILARI (.env)
+# Django
+SECRET_KEY=your-secret-key-here
+DEBUG=False
+ALLOWED_HOSTS=agromarket.uz,www.agromarket.uz
+# PostgreSQL
+DB_NAME=agromarket
+DB_USER=agrouser
+DB_PASSWORD=strong-password
+DB_HOST=db
+DB_PORT=5432
+# Redis
+REDIS_URL=redis://redis:6379/0
+# AWS S3
+AWS_ACCESS_KEY_ID=your-key
+AWS_SECRET_ACCESS_KEY=your-secret
+AWS_STORAGE_BUCKET_NAME=agromarket-media
+AWS_S3_REGION_NAME=us-east-1
+# Elasticsearch
+ELASTICSEARCH_URL=http://elasticsearch:9200
+# Click
+CLICK_MERCHANT_ID=12345
+CLICK_SERVICE_ID=67890
+CLICK_SECRET_KEY=click-secret
+# Payme
+PAYME_MERCHANT_ID=payme-merchant-id
+PAYME_KEY=payme-key
+# SMS (Eskiz)
+ESKIZ_EMAIL=your@email.com
+ESKIZ_PASSWORD=eskiz-password
+# Email
+EMAIL_HOST=smtp.sendgrid.net
+EMAIL_HOST_USER=apikey
+EMAIL_HOST_PASSWORD=sendgrid-api-key
+EMAIL_PORT=587
+# Firebase
+FIREBASE_CREDENTIALS_PATH=/app/firebase-credentials.json
+Ushbu TZ hujjati maxfiy hisoblanadi.
+© 2025 Agro Market | Python + Django + DRF + PostgreSQL + Redis + Celery

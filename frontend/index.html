@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agro Market - Dehqonchilik mahsulotlari</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-top">
+                <a href="index.html" class="logo">
+                    <div class="logo-icon"><i class="fas fa-leaf"></i></div>
+                    <span class="logo-text">Agro Market</span>
+                </a>
+                
+                <form class="search-form" onsubmit="handleSearch(event)">
+                    <input type="text" id="searchInput" placeholder="Mahsulot qidirish..." class="search-input">
+                    <button type="submit" class="search-btn"><i class="fas fa-search"></i></button>
+                </form>
+                
+                <div class="header-actions">
+                    <a href="cart.html" class="icon-btn cart-btn">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-badge" id="cartCount">0</span>
+                    </a>
+                    <div class="auth-section" id="authSection">
+                        <a href="login.html" class="btn btn-primary">Kirish</a>
+                    </div>
+                </div>
+            </div>
+            
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-link active">Bosh sahifa</a>
+                <a href="products.html" class="nav-link">Mahsulotlar</a>
+                <a href="shops.html" class="nav-link">Do'konlar</a>
+                <a href="categories.html" class="nav-link">Kategoriyalar</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-bg">
+                <img src="images/hero_banner.png" alt="Dehqonchilik mahsulotlari" class="hero-bg-img">
+                <div class="hero-overlay"></div>
+            </div>
+            <div class="container">
+                <div class="hero-content">
+                    <h1>Yangi, sifatli dehqonchilik mahsulotlari</h1>
+                    <p>Mahalliy dehqonlardan toza, yangi mahsulotlarni bevosita xarid qiling</p>
+                    <a href="products.html" class="btn btn-primary btn-lg">Mahsulotlarni ko'rish</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Categories Section -->
+        <section class="section bg-light" id="categoriesSection">
+            <div class="container">
+                <h2 class="section-title">Kategoriyalar</h2>
+                <div class="categories-grid" id="categoriesGrid">
+                    <!-- JS orqali yuklanadi -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured Products Section -->
+        <section class="section" id="productsSection">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Mashhur mahsulotlar</h2>
+                    <a href="products.html" class="btn btn-outline">Barchasini ko'rish <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="products-grid" id="featuredProducts">
+                    <!-- JS orqali yuklanadi -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Popular Shops Section -->
+        <section class="section bg-light" id="shopsSection">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Mashhur do'konlar</h2>
+                    <a href="shops.html" class="btn btn-outline">Barchasini ko'rish <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="shops-grid" id="popularShops">
+                    <!-- JS orqali yuklanadi -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title text-center">Nima uchun bizni tanlashadi?</h2>
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <i class="fas fa-leaf"></i>
+                        <h3>Toza mahsulotlar</h3>
+                        <p>Barcha mahsulotlar bevosita dehqonlardan yetkaziladi</p>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-truck"></i>
+                        <h3>Tez yetkazib berish</h3>
+                        <p>Buyurtmangiz 24 soat ichida yetkaziladi</p>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-shield-alt"></i>
+                        <h3>Kafolatlangan sifat</h3>
+                        <p>Barcha mahsulotlar sifat nazoratidan o'tgan</p>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-headset"></i>
+                        <h3>24/7 Qo'llab-quvvatlash</h3>
+                        <p>Har qanday savolingizga javob beramiz</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <a href="index.html" class="logo">
+                        <div class="logo-icon"><i class="fas fa-leaf"></i></div>
+                        <span class="logo-text">Agro Market</span>
+                    </a>
+                    <p class="footer-desc">Dehqonchilik mahsulotlarini online sotish platformasi</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Asosiy</h4>
+                    <ul>
+                        <li><a href="index.html">Bosh sahifa</a></li>
+                        <li><a href="products.html">Mahsulotlar</a></li>
+                        <li><a href="shops.html">Do'konlar</a></li>
+                        <li><a href="categories.html">Kategoriyalar</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Yordam</h4>
+                    <ul>
+                        <li><a href="about.html">Biz haqimizda</a></li>
+                        <li><a href="contact.html">Aloqa</a></li>
+                        <li><a href="faq.html">FAQ</a></li>
+                        <li><a href="terms.html">Foydalanish shartlari</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Aloqa</h4>
+                    <ul class="contact-list">
+                        <li><i class="fas fa-phone"></i> +998 77 235 44 11</li>
+                        <li><i class="fas fa-envelope"></i> info@agromarket.uz</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Xorazm, Urganch</li>
+                    </ul>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-telegram"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Agro Market. Barcha huquqlar himoyalangan.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/config.js"></script>
+    <script src="js/store.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/home.js"></script>
+</body>
+</html>
